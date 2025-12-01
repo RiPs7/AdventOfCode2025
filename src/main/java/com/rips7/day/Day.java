@@ -8,7 +8,6 @@ import static com.rips7.util.Util.printColor;
 import static com.rips7.util.Util.time;
 
 public interface Day<T> {
-    boolean VISUALIZE = true;
 
     default T part1(@SuppressWarnings("unused") String input) {
         // Do nothing by default
@@ -18,6 +17,11 @@ public interface Day<T> {
     default T part2(@SuppressWarnings("unused") String input) {
         // Do nothing by default
         return null;
+    }
+
+    default boolean visualize() {
+        // Do not visualize by default
+        return false;
     }
 
     default void setupVisuals(@SuppressWarnings("unused") PApplet canvas, @SuppressWarnings("unused") String input) {
@@ -35,7 +39,7 @@ public interface Day<T> {
     }
 
     default void run() {
-        if (VISUALIZE) {
+        if (visualize()) {
             PApplet.runSketch(new String[]{ VisualDay.class.getName() }, new VisualDay<>(this));
         } else {
             final String input = loadInput();
