@@ -13,6 +13,7 @@ import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -272,6 +273,14 @@ public class Util {
         IntStream.range(0, arr.length).forEach(r -> IntStream.range(0, arr[r].length).forEach(c -> cb.accept(arr[r][c], r, c)));
     }
 
+    public static <T> void loop2D(final Grid<T> grid, final Consumer<T> cb) {
+        IntStream.range(0, grid.rows()).forEach(r -> IntStream.range(0, grid.cols()).forEach(c -> cb.accept(grid.get(r, c))));
+    }
+
+    public static <T> void loop2D(final Grid<T> grid, final TriConsumer<T, Integer, Integer> cb) {
+        IntStream.range(0, grid.rows()).forEach(r -> IntStream.range(0, grid.cols()).forEach(c -> cb.accept(grid.get(r, c), r, c)));
+    }
+
     public static <T> void print2DArray(final T[][] arr) {
         print2DArray(arr, T::toString);
     }
@@ -359,6 +368,32 @@ public class Util {
                 }
             }
             throw new RuntimeException("Cannot find %s in the grid".formatted(value));
+        }
+
+        public void convolutionFull(final BiConsumer<T, List<T>> cb) {
+            convolutionFull(cb, t -> true);
+        }
+
+        public void convolutionFull(final BiConsumer<T, List<T>> cb, final Predicate<T> selectorPredicate) {
+            final Function<Position, List<Position>> neighboringPositionsGetter = (pos) -> List.of(
+                    Position.of(pos.x() - 1, pos.y() - 1),
+                    Position.of(pos.x() - 1, pos.y()),
+                    Position.of(pos.x() - 1, pos.y() + 1),
+                    Position.of(pos.x(), pos.y() - 1),
+                    Position.of(pos.x(), pos.y() + 1),
+                    Position.of(pos.x() + 1, pos.y() - 1),
+                    Position.of(pos.x() + 1, pos.y()),
+                    Position.of(pos.x() + 1, pos.y() + 1));
+            loop2D(this, (e, r, c) -> {
+                if (selectorPredicate.test(e)) {
+                    cb.accept(
+                            e,
+                            neighboringPositionsGetter.apply(Position.of(r, c)).stream()
+                                    .map(this::get)
+                                    .filter(Objects::nonNull)
+                                    .toList());
+                }
+            });
         }
 
         public int rows() {
