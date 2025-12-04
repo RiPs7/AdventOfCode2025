@@ -57,6 +57,11 @@ public class Day3 implements Day<Long> {
     }
 
     @Override
+    public void settings(PApplet pApplet) {
+        pApplet.size(1200, 800);
+    }
+
+    @Override
     public void setupVisuals(PApplet canvas, String input) {
         this.visualRanks = input.lines().map(VisualRank::parse).toList();
         this.maxBatteriesInRank = visualRanks.stream()

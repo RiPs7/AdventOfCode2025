@@ -22,7 +22,7 @@ public class VisualDay<T> extends PApplet {
 
     @Override
     public void settings() {
-        size(800, 600);
+        day.settings(this);
     }
 
     @Override
@@ -44,8 +44,6 @@ public class VisualDay<T> extends PApplet {
                 }
                 break;
             case DONE:
-                // You could add a "Finished!" message here
-                // noLoop(); // Optional: stop the draw loop
                 break;
         }
     }

@@ -24,6 +24,10 @@ public interface Day<T> {
         return false;
     }
 
+    default void settings(final PApplet pApplet) {
+        pApplet.size(800, 600);
+    }
+
     default void setupVisuals(@SuppressWarnings("unused") PApplet canvas, @SuppressWarnings("unused") String input) {
         // Do nothing by default
     }

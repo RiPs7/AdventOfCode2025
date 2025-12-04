@@ -343,6 +343,17 @@ public class Util {
     }
 
     public record Grid<T>(T[][] grid, T defaultValue) {
+
+        private static final Function<Position, List<Position>> FULL_NEIGHBOR_POSITION_GETTER = (pos) -> List.of(
+                Position.of(pos.x() - 1, pos.y() - 1),
+                Position.of(pos.x() - 1, pos.y()),
+                Position.of(pos.x() - 1, pos.y() + 1),
+                Position.of(pos.x(), pos.y() - 1),
+                Position.of(pos.x(), pos.y() + 1),
+                Position.of(pos.x() + 1, pos.y() - 1),
+                Position.of(pos.x() + 1, pos.y()),
+                Position.of(pos.x() + 1, pos.y() + 1));
+
         public static <T> Grid<T> of(final T[][] grid) {
             return of(grid, null);
         }
@@ -375,25 +386,22 @@ public class Util {
         }
 
         public void convolutionFull(final BiConsumer<T, List<T>> cb, final Predicate<T> selectorPredicate) {
-            final Function<Position, List<Position>> neighboringPositionsGetter = (pos) -> List.of(
-                    Position.of(pos.x() - 1, pos.y() - 1),
-                    Position.of(pos.x() - 1, pos.y()),
-                    Position.of(pos.x() - 1, pos.y() + 1),
-                    Position.of(pos.x(), pos.y() - 1),
-                    Position.of(pos.x(), pos.y() + 1),
-                    Position.of(pos.x() + 1, pos.y() - 1),
-                    Position.of(pos.x() + 1, pos.y()),
-                    Position.of(pos.x() + 1, pos.y() + 1));
             loop2D(this, (e, r, c) -> {
                 if (selectorPredicate.test(e)) {
-                    cb.accept(
-                            e,
-                            neighboringPositionsGetter.apply(Position.of(r, c)).stream()
-                                    .map(this::get)
-                                    .filter(Objects::nonNull)
-                                    .toList());
+                    cb.accept(e, getNeighborsFull(r, c));
                 }
             });
+        }
+
+        public List<T> getNeighborsFull(final int r, final int c) {
+            return FULL_NEIGHBOR_POSITION_GETTER.apply(Position.of(r, c)).stream()
+                    .map(this::get)
+                    .filter(Objects::nonNull)
+                    .toList();
+        }
+
+        public void iterate(final Consumer<T> e) {
+            loop2D(this, e);
         }
 
         public int rows() {
