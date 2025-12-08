@@ -400,6 +400,10 @@ public class Util {
                     .toList();
         }
 
+        public boolean isWithin(final Position pos) {
+            return isWithinGrid(pos, grid);
+        }
+
         public void iterate(final Consumer<T> e) {
             loop2D(this, e);
         }

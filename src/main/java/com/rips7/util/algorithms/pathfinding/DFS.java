@@ -1,19 +1,18 @@
 package com.rips7.util.algorithms.pathfinding;
 
-import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 import java.util.function.Function;
 
 import static com.rips7.util.algorithms.pathfinding.Node.backtrack;
 import static com.rips7.util.algorithms.pathfinding.Node.node;
 
 @SuppressWarnings({"unused", "UnusedReturnValue"})
-public class BFS<T> {
+public class DFS<T> {
 
     public List<T> run(final T start, final Function<T, List<T>> neighborsGetter) {
         return run(start, null, neighborsGetter, false);
@@ -24,7 +23,7 @@ public class BFS<T> {
     }
 
     public List<T> run(final T start, final T end, final Function<T, List<T>> neighborsGetter, final boolean isStartSameAsEnd) {
-        final Queue<Node<T>> frontier = new ArrayDeque<>();
+        final Stack<Node<T>> frontier = new Stack<>();
         final Set<Node<T>> closed = new HashSet<>();
 
         final Node<T> startNode = node(start);
@@ -36,10 +35,10 @@ public class BFS<T> {
                     .peek(n -> n.parent(startNode))
                     .forEach(frontier::add);
         } else {
-            frontier.add(startNode);
+            frontier.push(startNode);
         }
         while (!frontier.isEmpty()) {
-            final Node<T> current = frontier.poll();
+            final Node<T> current = frontier.pop();
             if (current.equals(endNode)) {
                 return backtrack(current);
             }
