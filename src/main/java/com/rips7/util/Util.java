@@ -16,7 +16,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
 public class Util {
@@ -90,6 +89,12 @@ public class Util {
         }
     }
 
+    public record Pair<L, R>(L left, R right) {
+        public static <L, R> Pair<L, R> of(final L left, final R right) {
+            return new Pair<>(left, right);
+        }
+    }
+
     public enum Direction {
         UP(Offset.UP),
         UP_RIGHT(Offset.UP_RIGHT),
@@ -136,12 +141,8 @@ public class Util {
         }
     }
 
-    public static Stream<String> lines(final String input) {
-        return Arrays.stream(input.split("\n"));
-    }
-
     public static Character[][] grid(final String input) {
-        return Util.lines(input)
+        return input.lines()
                 .map(line -> line.chars()
                         .mapToObj(c -> (char) c)
                         .toArray(Character[]::new))
@@ -161,14 +162,6 @@ public class Util {
         return IntStream.range(0, zipSize)
                 .mapToObj(i -> Arrays.stream(lists).map(l -> l.get(i)).toList())
                 .toList();
-    }
-
-    public static <T> T lastElement(final List<T> list) {
-        return list.isEmpty() ? null : list.getLast();
-    }
-
-    public static <T> T firstElement(final List<T> list) {
-        return list.isEmpty() ? null : list.getFirst();
     }
 
     public static <T> T randomElement(final List<T> list) {
