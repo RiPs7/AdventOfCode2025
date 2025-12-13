@@ -363,6 +363,10 @@ public class Util {
             return isWithinGrid(row, col, grid) ? grid[row][col] : defaultValue;
         }
 
+        public void set(final int row, final int col, final T data) {
+            grid[row][col] = data;
+        }
+
         public Position find(final T value) {
             for (int r = 0; r < grid.length; r++) {
                 for (int c = 0; c < grid[r].length; c++) {
