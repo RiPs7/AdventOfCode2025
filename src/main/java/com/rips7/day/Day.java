@@ -1,7 +1,6 @@
 package com.rips7.day;
 
 import com.rips7.util.Util;
-import processing.core.PApplet;
 
 import static com.rips7.util.Util.TimedResult;
 import static com.rips7.util.Util.printColor;
@@ -19,49 +18,22 @@ public interface Day<T> {
         return null;
     }
 
-    default boolean visualize() {
-        // Do not visualize by default
-        return false;
-    }
-
-    default void settings(final PApplet pApplet) {
-        pApplet.size(800, 600);
-    }
-
-    default void setupVisuals(@SuppressWarnings("unused") PApplet canvas, @SuppressWarnings("unused") String input) {
-        // Do nothing by default
-    }
-
-    default boolean drawPart1(@SuppressWarnings("unused") PApplet canvas) {
-        part1(loadInput());
-        return false;
-    }
-
-    default boolean drawPart2(@SuppressWarnings("unused") PApplet canvas) {
-        part2(loadInput());
-        return false;
-    }
-
     default void run() {
-        if (visualize()) {
-            PApplet.runSketch(new String[]{ VisualDay.class.getName() }, new VisualDay<>(this));
-        } else {
-            final String input = loadInput();
+        final String input = loadInput();
 
-            System.out.printf("----- %s -----%n", getClass().getSimpleName());
+        System.out.printf("----- %s -----%n", getClass().getSimpleName());
 
-            final TimedResult<T> part1Res = time(() -> part1(input));
-            System.out.print("Part 1: ");
-            printColor("%s ".formatted(part1Res.res()), Util.AnsiColor.GREEN);
-            printColor("(%s)%n".formatted(part1Res.timeInfo()), Util.AnsiColor.YELLOW);
+        final TimedResult<T> part1Res = time(() -> part1(input));
+        System.out.print("Part 1: ");
+        printColor("%s ".formatted(part1Res.res()), Util.AnsiColor.GREEN);
+        printColor("(%s)%n".formatted(part1Res.timeInfo()), Util.AnsiColor.YELLOW);
 
-            final TimedResult<T> part2Res = time(() -> part2(input));
-            System.out.print("Part 2: ");
-            printColor("%s ".formatted(part2Res.res()), Util.AnsiColor.GREEN);
-            printColor("(%s)%n".formatted(part2Res.timeInfo()), Util.AnsiColor.YELLOW);
+        final TimedResult<T> part2Res = time(() -> part2(input));
+        System.out.print("Part 2: ");
+        printColor("%s ".formatted(part2Res.res()), Util.AnsiColor.GREEN);
+        printColor("(%s)%n".formatted(part2Res.timeInfo()), Util.AnsiColor.YELLOW);
 
-            System.out.println("----------------");
-        }
+        System.out.println("----------------");
     }
 
     default String loadInput() {

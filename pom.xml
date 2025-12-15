@@ -17,35 +17,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.processing</groupId>
-            <artifactId>core</artifactId>
-            <version>4.3.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jogamp.jogl</groupId>
-            <artifactId>jogl-all</artifactId>
-            <version>${jogamp.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jogamp.gluegen</groupId>
-            <artifactId>gluegen-rt</artifactId>
-            <version>${jogamp.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.ojalgo</groupId>
             <artifactId>ojalgo</artifactId>
             <version>56.1.1</version>
         </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>jogamp-remote</id>
-            <name>JogAmp Remote Repository</name>
-            <url>https://jogamp.org/deployment/maven/</url>
-        </repository>
-    </repositories>
 
 </project>

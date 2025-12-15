@@ -6,8 +6,20 @@ import java.util.stream.Stream;
 public class AllDays {
 
     public static Stream<Day<?>> getAllDays() {
-        return Stream.of(Day1.class)
-                .map(clazz -> {
+        return Stream.of(
+            Day1.class,
+            Day2.class,
+            Day3.class,
+            Day4.class,
+            Day5.class,
+            Day6.class,
+            Day7.class,
+            Day8.class,
+            Day9.class,
+            Day10.class,
+            Day11.class,
+            Day12.class)
+          .map(clazz -> {
                     try {
                         return clazz.getConstructor().newInstance();
                     } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
