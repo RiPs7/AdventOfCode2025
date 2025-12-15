@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static com.rips7.util.algorithms.pathfinding.Node.backtrack;
 import static com.rips7.util.algorithms.pathfinding.Node.node;
@@ -16,14 +17,18 @@ import static com.rips7.util.algorithms.pathfinding.Node.node;
 public class BFS<T> {
 
     public List<T> run(final T start, final Function<T, List<T>> neighborsGetter) {
-        return run(start, null, neighborsGetter, false);
+        return run(start, null, (n) -> false, neighborsGetter, false);
     }
 
     public List<T> run(final T start, final T end, final Function<T, List<T>> neighborsGetter) {
-        return run(start, end, neighborsGetter, false);
+        return run(start, end, (n) -> false, neighborsGetter);
     }
 
-    public List<T> run(final T start, final T end, final Function<T, List<T>> neighborsGetter, final boolean isStartSameAsEnd) {
+    public List<T> run(final T start, final T end, final Predicate<T> pruner, final Function<T, List<T>> neighborsGetter) {
+        return run(start, end, (n) -> false, neighborsGetter, false);
+    }
+
+    public List<T> run(final T start, final T end, final Predicate<T> pruner, final Function<T, List<T>> neighborsGetter, final boolean isStartSameAsEnd) {
         final Queue<Node<T>> frontier = new ArrayDeque<>();
         final Set<Node<T>> closed = new HashSet<>();
 
@@ -44,6 +49,9 @@ public class BFS<T> {
                 return backtrack(current);
             }
             if (closed.contains(current)) {
+                continue;
+            }
+            if (pruner.test(current.data())) {
                 continue;
             }
             neighborsGetter.apply(current.data()).stream()
